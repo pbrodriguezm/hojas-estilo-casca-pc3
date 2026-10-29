@@ -1,0 +1,319 @@
+/* =========================================================
+   Portafolio Interactivo - Práctica 03
+   Transformaciones y animaciones en CSS puro
+   ========================================================= */
+
+/* ---------- Estilos generales ---------- */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 70px; /* compensa la navbar fija */
+}
+
+body {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+section h2 {
+    font-weight: 700;
+}
+
+/* =========================================================
+   1. ANIMACIÓN DE CARGA (LOADER)
+   ========================================================= */
+.loader-pantalla {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    background-color: #212529;
+    /* se oculta sola después de 1.8 s */
+    animation-name: ocultar-loader;
+    animation-duration: 0.6s;
+    animation-delay: 1.8s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #0d6efd;
+    border-radius: 50%;
+    /* círculo girando infinitamente */
+    animation-name: girar;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.loader-texto {
+    color: #f8f9fa;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+@keyframes girar {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes ocultar-loader {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/* =========================================================
+   2. NAVBAR - logo animado
+   ========================================================= */
+.logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-weight: 700;
+    color: #fff;
+    background-color: #0d6efd;
+    /* animación personalizada: cambia de color y tamaño */
+    animation-name: latido-color;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes latido-color {
+    0% {
+        background-color: #0d6efd;
+        transform: scale(1);
+    }
+    50% {
+        background-color: #6f42c1;
+        transform: scale(1.12);
+    }
+    100% {
+        background-color: #d63384;
+        transform: scale(1);
+    }
+}
+
+/* =========================================================
+   3. INICIO (HERO) - textos que aparecen deslizándose
+   ========================================================= */
+.seccion-inicio {
+    padding: 130px 0 90px;
+    color: #fff;
+    background: linear-gradient(135deg, #0b1d3a 0%, #1f3c88 60%, #3f51b5 100%);
+}
+
+.seccion-inicio h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+}
+
+.titulo-deslizar {
+    /* animación personalizada: entra deslizándose desde la izquierda */
+    animation-name: deslizar-izquierda;
+    animation-duration: 1s;
+    animation-delay: 2s; /* empieza cuando termina el loader */
+    animation-timing-function: ease-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+}
+
+.texto-deslizar {
+    animation-name: deslizar-izquierda;
+    animation-duration: 1s;
+    animation-delay: 2.3s;
+    animation-timing-function: ease-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+}
+
+@keyframes deslizar-izquierda {
+    from {
+        opacity: 0;
+        transform: translateX(-60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* etiqueta que cambia de color constantemente */
+.etiqueta-disponible {
+    display: inline-block;
+    padding: 6px 14px;
+    margin-bottom: 15px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    animation-name: brillo;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes brillo {
+    from {
+        background-color: #198754;
+        box-shadow: 0 0 0 rgba(25, 135, 84, 0);
+    }
+    to {
+        background-color: #20c997;
+        box-shadow: 0 0 18px rgba(32, 201, 151, 0.8);
+    }
+}
+
+/* =========================================================
+   4. TRANSFORMACIÓN 3D - tarjeta giratoria
+   ========================================================= */
+.escena-3d {
+    perspective: 1000px; /* el padre define la perspectiva */
+    max-width: 360px;
+    margin: 0 auto;
+}
+
+.tarjeta-3d {
+    position: relative;
+    height: 300px;
+    transform-style: preserve-3d; /* los hijos conservan el espacio 3D */
+    transform: rotateX(10deg) rotateY(-20deg); /* inclinación inicial */
+    transition: transform 0.9s ease;
+}
+
+.escena-3d:hover .tarjeta-3d {
+    transform: rotateX(0deg) rotateY(180deg); /* gira en los ejes X e Y */
+}
+
+.cara {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    border-radius: 18px;
+    text-align: center;
+    backface-visibility: hidden; /* oculta la cara de atrás */
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.35);
+}
+
+.cara-frontal {
+    background: linear-gradient(145deg, #0d6efd, #6f42c1);
+}
+
+.cara-trasera {
+    background: linear-gradient(145deg, #d63384, #fd7e14);
+    transform: rotateY(180deg);
+}
+
+.cara-trasera li {
+    font-size: 1.1rem;
+    margin: 6px 0;
+}
+
+.icono-grande {
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+/* =========================================================
+   5. TRANSFORMACIONES 2D - cajas de proyectos (:hover)
+   ========================================================= */
+.caja {
+    height: 100%;
+    padding: 30px 25px;
+    border-radius: 16px;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    /* transición para que el cambio sea suave */
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.caja h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.icono-caja {
+    font-size: 2.5rem;
+    color: #0d6efd;
+}
+
+.caja:hover {
+    box-shadow: 0 18px 35px rgba(13, 110, 253, 0.25);
+}
+
+/* Caja 1: rotación */
+.caja-rotar:hover {
+    transform: rotate(-5deg);
+}
+
+/* Caja 2: escalado */
+.caja-escalar:hover {
+    transform: scale(1.08);
+}
+
+/* Caja 3: traslación y sesgado */
+.caja-trasladar:hover {
+    transform: translateY(-15px) skewX(-4deg);
+}
+
+/* =========================================================
+   6. CONTACTO
+   ========================================================= */
+.datos-contacto li {
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+}
+
+.datos-contacto i {
+    color: #0d6efd;
+    margin-right: 8px;
+}
+
+.formulario {
+    padding: 30px;
+    border-radius: 16px;
+    background-color: #fff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================================
+   7. RESPONSIVE
+   ========================================================= */
+@media (max-width: 767px) {
+    .seccion-inicio {
+        padding: 110px 0 60px;
+        text-align: center;
+    }
+
+    .seccion-inicio .d-flex {
+        justify-content: center;
+    }
+
+    .tarjeta-3d {
+        height: 260px;
+    }
+
+    .formulario {
+        padding: 20px;
+    }
+}
